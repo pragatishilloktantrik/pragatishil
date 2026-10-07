@@ -194,7 +194,7 @@ export default function UserManagementPage() {
                     <input
                         type="text"
                         className="form-input !pl-9 !py-2"
-                        placeholder="Search users..."
+                        placeholder="Search names..."
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />
@@ -252,13 +252,13 @@ export default function UserManagementPage() {
                                 </td>
                                 <td className="p-4 text-sm text-slate-600">{user.email || "-"}</td>
                                 <td className="p-4">
-                                    <select
+                                    {user.role === 'admin' ? <span className="rounded bg-blue-50 px-3 py-1 text-xs font-bold text-brand-blue">Owner / Admin</span> : <select
                                         value={user.role || 'member'}
                                         onChange={(e) => handleRoleChange(user.id, e.target.value)}
                                         className="form-input !py-1 !px-2 !text-xs !w-auto"
                                     >
                                         {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
-                                    </select>
+                                    </select>}
                                 </td>
                                 <td className="p-4">
                                     {user.is_banned ? (
@@ -289,6 +289,7 @@ export default function UserManagementPage() {
                                         </button>
                                         <button
                                             onClick={() => handleBanClick(user)}
+                                            disabled={user.role === 'admin'}
                                             className={`p-1.5 rounded-lg transition-colors ${user.is_banned
                                                 ? "text-red-600 bg-red-50 hover:bg-red-100"
                                                 : "text-slate-400 hover:text-red-500 hover:bg-red-50"
@@ -299,7 +300,7 @@ export default function UserManagementPage() {
                                         </button>
                                         <button
                                             onClick={() => handleDeactivateUser(user)}
-                                            disabled={isDeleting}
+                                            disabled={isDeleting || user.role === 'admin'}
                                             className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
                                             title="Deactivate User (Preserve Data)"
                                         >

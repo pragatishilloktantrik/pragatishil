@@ -47,7 +47,14 @@ export async function getUsers(page = 1, search = "") {
         throw new Error("Failed to fetch users");
     }
 
-    return { users: data, total: count || 0 };
+    // Login emails belong to Auth, not publicly readable profile columns.
+    // Fetch only this page after the owner authorization check above.
+    const accounts = await Promise.all((data || []).map(async profile => {
+        const { data: account, error: accountError } = await supabaseAdmin.auth.admin.getUserById(profile.id);
+        if (accountError) throw new Error('Could not load account emails. Please retry.');
+        return { ...profile, email: account.user?.email || null };
+    }));
+    return { users: accounts, total: count || 0 };
 }
 
 export async function updateUserRole(userId: string, newRole: string) {
