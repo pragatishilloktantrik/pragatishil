@@ -1,8 +1,11 @@
+import { aiDisabledResponse } from '@/lib/ai/enabled';
 import { NextRequest, NextResponse } from 'next/server';
 import { parseVoterId } from '@/lib/ai/geminiServer';
 import { createClient } from '@/lib/supabase/server';
 
 export async function POST(req: NextRequest) {
+    const disabled = aiDisabledResponse();
+    if (disabled) return disabled;
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();

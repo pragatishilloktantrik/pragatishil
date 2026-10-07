@@ -1,9 +1,12 @@
+import { aiDisabledResponse } from '@/lib/ai/enabled';
 import { NextRequest, NextResponse } from 'next/server';
 import { summarizeThread } from '@/lib/ai/geminiServer';
 import { createClient } from '@/lib/supabase/server';
 import { isAtLeast } from '@/types';
 
 export async function POST(req: NextRequest) {
+    const disabled = aiDisabledResponse();
+    if (disabled) return disabled;
     try {
         const body = await req.json();
         const { threadId, title, content } = body;

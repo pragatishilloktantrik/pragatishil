@@ -10,7 +10,7 @@ export function canAccessAdminPath(path: string, role: string, permissions: Part
     if (role === 'admin') return true;
     // Existing technical / party administrators retain their existing CMS access.
     if (['yantrik', 'admin_party'].includes(role)) {
-        return !['/admin/positions', '/admin/roles', '/admin/users', '/admin/council', '/admin/audit'].some(p => path === p || path.startsWith(p + '/'));
+        return !['/admin/registrations', '/admin/positions', '/admin/roles', '/admin/users', '/admin/council', '/admin/audit'].some(p => path === p || path.startsWith(p + '/'));
     }
     if (path === '/admin') return permissions.some(p => p === 'news.publish' || p === 'media.publish');
     if (path === '/admin/news' || path.startsWith('/admin/news/')) return permissions.includes('news.publish');

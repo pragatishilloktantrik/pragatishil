@@ -1,8 +1,13 @@
+import { aiDisabledResponse } from '@/lib/ai/enabled'
 import { canAccessAdminPath, PartyPermission } from '@/lib/party-access'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+    if (request.nextUrl.pathname.startsWith('/api/ai/')) {
+        const disabled = aiDisabledResponse();
+        if (disabled) return disabled;
+    }
     let response = NextResponse.next({ request })
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,

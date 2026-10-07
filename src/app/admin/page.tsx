@@ -12,7 +12,7 @@ export default function AdminDashboard() {
     const cards = [
         { label: 'News items visible to you', count: data.news, href: '/admin/news' },
         { label: 'Media items', count: data.media, href: '/admin/media' },
-        { label: 'Membership applications', count: data.members, href: '/admin/users' },
+        { label: 'Membership applications', count: data.members, href: '/admin/registrations' },
     ].filter(c => c.count !== null);
     return <div className="max-w-5xl space-y-8">
         <div><h1 className="text-2xl font-bold">Dashboard</h1><p className="mt-2 text-slate-600">Live counts from the website database.</p></div>
@@ -24,6 +24,6 @@ export default function AdminDashboard() {
             <Link className="rounded-lg bg-slate-100 px-4 py-3" href="/commune">Community channels</Link>
             {data.owner && <><Link className="rounded-lg bg-amber-50 px-4 py-3 text-amber-900" href="/admin/positions">Positions & access</Link><Link className="rounded-lg bg-slate-100 px-4 py-3" href="/admin/users">Members & system roles</Link></>}
         </div></section>
-        {data.owner && <p className="text-sm text-slate-600">Use Positions & access to appoint Sachiv ji and other office bearers. Financial records and expense entry will be added in a separate accounting module.</p>}
+        {data.owner && <p className="text-sm text-slate-600">Use Positions & access to appoint Sachiv ji and other office bearers. Finance and expense features are not enabled.</p>}
     </div>;
 }

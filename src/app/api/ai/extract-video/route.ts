@@ -1,3 +1,4 @@
+import { aiDisabledResponse } from '@/lib/ai/enabled';
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { extractVideoMetadata } from "@/lib/ai/formCompletion";
@@ -11,6 +12,8 @@ export const dynamic = 'force-dynamic';
  * Requires authentication.
  */
 export async function POST(request: NextRequest) {
+    const disabled = aiDisabledResponse();
+    if (disabled) return disabled;
     try {
         const supabase = await createClient();
 

@@ -9,7 +9,7 @@ The official production web app for **pragatishil.org.np**.
 - **Styling**: Tailwind CSS (with `lucide-react` icons)
 - **Database**: Supabase (PostgreSQL + Storage)
 - **Auth**: Supabase Auth
-- **AI**: Google Gemini (Flash 1.5/2.5) for OCR and Chat
+- **AI**: Disabled by default. Registration is manual and makes no AI requests.
 
 ## Getting Started
 
@@ -25,7 +25,9 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 
 # Private (Server Only)
-GEMINI_API_KEY=your_gemini_key
+WEBSITE_AI_ENABLED=false
+# Optional, only if AI is explicitly enabled after reviewing provider costs:
+GEMINI_API_KEY=
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
@@ -113,3 +115,9 @@ Configure these in the Vercel Dashboard (Settings > Environment Variables), **NO
 
 ## Branding
 See [branding.md](branding.md) for detailed color palettes and font usages.
+
+### Member registration
+
+`/join` requires Google sign-in, name, phone, location, and consent. Optional details can be added later; private account drafts autosave. Submission creates or updates one pending application per account. The owner reviews applications at `/admin/registrations`. Only approved applicants who opted in are published automatically. Changes to an application return it to pending review.
+
+`WEBSITE_AI_ENABLED` defaults to disabled unless it equals `true`. All `/api/ai/*` routes return 503 while disabled, before contacting an AI provider. Hosting, database, and unrelated provider usage are separate from AI usage. Do not enable AI without an explicit cost review.

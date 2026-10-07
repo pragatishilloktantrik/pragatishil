@@ -1,8 +1,11 @@
+import { aiDisabledResponse } from '@/lib/ai/enabled';
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // POST /api/ai/format-post
 export async function POST(request: NextRequest) {
+    const disabled = aiDisabledResponse();
+    if (disabled) return disabled;
     try {
 
         const body = await request.json();

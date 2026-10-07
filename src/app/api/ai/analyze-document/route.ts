@@ -1,7 +1,10 @@
+import { aiDisabledResponse } from '@/lib/ai/enabled';
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeDocumentFromUrl } from '@/lib/ai/geminiServer';
 
 export async function POST(req: NextRequest) {
+    const disabled = aiDisabledResponse();
+    if (disabled) return disabled;
     try {
         const body = await req.json();
         const url = body.url || body.documentUrl;

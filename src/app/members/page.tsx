@@ -25,7 +25,7 @@ export default async function MembersGalleryPage() {
     // Central committee and above can see ALL members
     const canSeeAllMembers = hasRole(viewerRole, 'central_committee');
 
-    let query = supabaseAdmin.from("profiles").select("*");
+    let query = supabaseAdmin.from("profiles").select("id,full_name,avatar_url,role,is_public,bio,location,expertise,skills,profession,profession_category,organization,position_title,handle,show_location,show_contact_email,show_contact_phone,contact_email_public,contact_phone_public,province_id,district_id,local_level_id,member_since");
 
     if (canSeeAllMembers) {
         // Fetch all members for central committee+
@@ -33,7 +33,7 @@ export default async function MembersGalleryPage() {
         query = query.not('role', 'in', '(admin,yantrik)');
     } else {
         // Regular users only see public + leadership
-        query = query.or("is_public.eq.true,role.in.(admin_party,board,central_committee)");
+        query = query.eq("is_public", true);
     }
 
     const { data: members, error } = await query;
@@ -53,6 +53,12 @@ export default async function MembersGalleryPage() {
     // Ensure defaults for any missing fields
     const safeMembers = (members || []).map(m => ({
         ...m,
+        location: m.show_location ? m.location : null,
+        province_id: m.show_location ? m.province_id : null,
+        district_id: m.show_location ? m.district_id : null,
+        local_level_id: m.show_location ? m.local_level_id : null,
+        contact_email_public: m.show_contact_email ? m.contact_email_public : null,
+        contact_phone_public: m.show_contact_phone ? m.contact_phone_public : null,
         role: m.role || 'supporter',
         is_public: m.is_public ?? false,
         expertise: m.expertise || [],
