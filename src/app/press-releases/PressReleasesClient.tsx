@@ -29,7 +29,7 @@ export default function PressReleasesClient({ documents: initialDocuments }: Pre
         const fetchUser = async () => {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
@@ -50,7 +50,7 @@ export default function PressReleasesClient({ documents: initialDocuments }: Pre
     const refreshDocuments = async () => {
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         const { data } = await supabase
             .from('media_gallery')
@@ -67,7 +67,7 @@ export default function PressReleasesClient({ documents: initialDocuments }: Pre
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { error } = await supabase
                 .from('media_gallery')

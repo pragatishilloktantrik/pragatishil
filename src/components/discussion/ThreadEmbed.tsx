@@ -95,7 +95,7 @@ export default function ThreadEmbed({ threadId }: { threadId: string }) {
     useEffect(() => {
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         supabase.auth.getUser().then(async ({ data }) => {
             if (data.user) {

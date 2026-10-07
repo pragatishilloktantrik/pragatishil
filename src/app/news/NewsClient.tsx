@@ -24,7 +24,7 @@ export default function NewsClient({ initialNews }: NewsClientProps) {
         const fetchUser = async () => {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
@@ -49,7 +49,7 @@ export default function NewsClient({ initialNews }: NewsClientProps) {
 
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         const { error } = await supabase.from('news_items').delete().eq('id', item.id);
         if (error) {

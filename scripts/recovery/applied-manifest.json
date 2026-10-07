@@ -1,0 +1,17 @@
+[
+  {
+    "file": "supabase/migrations/20261007120000_public_baseline.sql",
+    "sha256": "fe944a47f05498e213501754c367239613f159e19fe9ba2e554e62faca2edf5a",
+    "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007120001_supabase_configuration.sql",
+    "sha256": "c3092ff42cadc5c49d5903dab9a4db313b1e29a1c2df6c3bd854b4d99bea2029",
+    "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007120002_lookup_and_membership_access.sql",
+    "sha256": "29149908a008aaa1a44058cb29a7067917a874af48e689d6b71873e819884126",
+    "applied_project": "ufwkblaqnutxqineduke"
+  }
+]

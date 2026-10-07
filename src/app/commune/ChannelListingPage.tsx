@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { DiscussionChannel, DiscussionThread } from "@/types";
-import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import { Loader2, MessageSquare, Users, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,7 +19,7 @@ export default function ChannelListingPage() {
     const [loadingMore, setLoadingMore] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [hasMore, setHasMore] = useState(true);
-    const [page, setPage] = useState(0);
+    const [, setPage] = useState(0);
     const CHANNELS_PER_PAGE = 5;
 
     // Intersection Observer ref for infinite scroll
@@ -222,7 +221,7 @@ export default function ChannelListingPage() {
                 {!hasMore && channels.length > 0 && (
                     <div className="text-center py-8">
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            You've reached the end! 🎉
+                            You&apos;ve reached the end! 🎉
                         </p>
                     </div>
                 )}

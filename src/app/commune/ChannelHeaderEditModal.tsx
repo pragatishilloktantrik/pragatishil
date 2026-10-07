@@ -39,7 +39,7 @@ export default function ChannelHeaderEditModal({ isOpen, onClose, onSuccess, cha
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
 
             const filePath = `channel-headers/${channel.id}/${Date.now()}-${file.name}`;

@@ -204,7 +204,7 @@ export default function ChannelModal({ isOpen, onClose, onSuccess, editChannel, 
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
 
             // Upload to Supabase Storage

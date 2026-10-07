@@ -31,7 +31,7 @@ export default function HomeClient({ content, news, videos, documents = [] }: Ho
         const checkAuth = async () => {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
             setIsAuthenticated(!!user);

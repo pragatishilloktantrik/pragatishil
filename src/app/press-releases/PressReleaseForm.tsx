@@ -44,7 +44,7 @@ export default function PressReleaseForm({ onClose, onSuccess, editItem }: Press
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
 
             const fileExt = selectedFile.name.split('.').pop();
@@ -121,7 +121,7 @@ export default function PressReleaseForm({ onClose, onSuccess, editItem }: Press
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
 
             const { data: { user } } = await supabase.auth.getUser();

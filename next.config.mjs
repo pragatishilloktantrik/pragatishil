@@ -10,7 +10,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'kathmandupost.com' },
       { protocol: 'https', hostname: 'assets-cdn.kathmandupost.com' },
       { protocol: 'https', hostname: 'og.kathmandupost.com' },
-      { protocol: 'https', hostname: 'ivlpnaxrefpihtgdlidc.supabase.co' },
+      { protocol: 'https', hostname: 'ufwkblaqnutxqineduke.supabase.co' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { protocol: 'https', hostname: '*.googleusercontent.com' },
       { protocol: 'https', hostname: 'img.youtube.com' },

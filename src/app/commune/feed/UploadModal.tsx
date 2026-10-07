@@ -123,7 +123,7 @@ export default function UploadModal({ isOpen, onClose, channelId, onSuccess }: U
             // Step 3: Get the public URL for the uploaded file
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
 
             const { data: { publicUrl } } = supabase.storage

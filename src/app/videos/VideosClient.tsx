@@ -29,7 +29,7 @@ export default function VideosClient({ videos: initialVideos }: VideosClientProp
 
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         const { error } = await supabase.from('media_gallery').delete().eq('id', video.id);
         if (error) {
@@ -43,7 +43,7 @@ export default function VideosClient({ videos: initialVideos }: VideosClientProp
         const fetchUser = async () => {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
@@ -68,7 +68,7 @@ export default function VideosClient({ videos: initialVideos }: VideosClientProp
     const refreshVideos = async () => {
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         const { data } = await supabase
             .from('media_gallery')
@@ -231,7 +231,7 @@ function VideoAddModal({ onClose, onSuccess }: { onClose: () => void; onSuccess:
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
 
@@ -323,7 +323,7 @@ function VideoEditModal({ video, onClose, onSuccess }: { video: MediaItem; onClo
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
 

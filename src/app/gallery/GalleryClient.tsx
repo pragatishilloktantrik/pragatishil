@@ -39,7 +39,7 @@ export default function GalleryClient({ albums: initialAlbums, images: initialIm
 
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         const { error } = await supabase.from('media_gallery').delete().eq('id', img.id);
         if (error) {
@@ -53,7 +53,7 @@ export default function GalleryClient({ albums: initialAlbums, images: initialIm
         const fetchUser = async () => {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
@@ -101,7 +101,7 @@ export default function GalleryClient({ albums: initialAlbums, images: initialIm
     const refreshData = async () => {
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         const [albumsRes, imagesRes] = await Promise.all([
             supabase.from('media_albums').select('*').order('created_at', { ascending: false }),
@@ -373,7 +373,7 @@ function AlbumFormModal({ onClose, onSuccess }: { onClose: () => void; onSuccess
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
 
@@ -444,7 +444,7 @@ function PhotoUploadModal({ albums, onClose, onSuccess }: { albums: MediaAlbum[]
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const fileExt = selectedFile.name.split('.').pop();
             const fileName = `gallery/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
@@ -488,7 +488,7 @@ function PhotoUploadModal({ albums, onClose, onSuccess }: { albums: MediaAlbum[]
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
 
@@ -626,7 +626,7 @@ function PhotoEditModal({ image, albums, onClose, onSuccess }: { image: MediaIte
         try {
             const supabase = createBrowserClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
             );
             const { data: { user } } = await supabase.auth.getUser();
 

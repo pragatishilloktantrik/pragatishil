@@ -19,7 +19,7 @@ export default function Navbar() {
     useEffect(() => {
         const supabase = createBrowserClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
         supabase.auth.getUser().then(({ data }) => {
             setUser(data.user);
@@ -88,7 +88,7 @@ export default function Navbar() {
                                         onClick={async () => {
                                             const supabase = createBrowserClient(
                                                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                                                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                                                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
                                             );
                                             await supabase.auth.signOut();
                                             window.location.href = "/"; // Force reload/redirect
@@ -225,7 +225,7 @@ export default function Navbar() {
                                         onClick={async () => {
                                             const supabase = createBrowserClient(
                                                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                                                process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                                                (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
                                             );
                                             await supabase.auth.signOut();
                                             window.location.href = "/";
