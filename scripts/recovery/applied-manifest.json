@@ -43,5 +43,15 @@
     "file": "supabase/migrations/20261007160000_restore_public_community.sql",
     "sha256": "681d2cd26424ba2fb698463196bbd8e560058de80d8a515a2090eae79a886cd5",
     "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007170000_article_submissions.sql",
+    "sha256": "a21fe1b092d1a2021a3090958439131655edfe28f342df69ff28a7e39fa1888c",
+    "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007170001_private_article_feedback.sql",
+    "sha256": "579acc525472cd5e50a024f91a7b1c76ab1901f594d66b0fbd28dde649a32435",
+    "applied_project": "ufwkblaqnutxqineduke"
   }
 ]

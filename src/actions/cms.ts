@@ -112,6 +112,7 @@ export async function upsertNewsItem(item: any) {
 
     // Determine content type (default to 'official' for backwards compatibility)
     const contentType = item.content_type || 'official';
+    if (contentType === 'article') throw new Error('Use the member article submission and review tools.');
     const isOfficial = contentType === 'official';
     const isArticle = contentType === 'article';
     if (!isOfficial && !isArticle) throw new Error('Invalid content type');
@@ -133,6 +134,7 @@ export async function upsertNewsItem(item: any) {
     if (item.id) {
         const { data } = await supabase.from('news_items').select('*').eq('id', item.id).single();
         oldData = data;
+        if (!oldData || oldData.content_type === 'article') throw new Error('Use the member article submission and review tools.');
 
         // If editing an article, check ownership or admin privilege
         if (oldData && oldData.content_type === 'article') {

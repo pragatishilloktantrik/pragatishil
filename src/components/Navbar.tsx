@@ -34,6 +34,7 @@ export default function Navbar() {
     }, []);
 
     const navLinks = [
+        { name: t("Articles", "लेखहरू"), href: "/blogs" },
         { name: t(nav?.home?.en || "Home", nav?.home?.ne || "गृहपृष्ठ"), href: "/" },
         { name: t(nav?.media?.en || "Media", nav?.media?.ne || "मिडिया"), href: "/media" },
         { name: t(nav?.about?.en || "About", nav?.about?.ne || "हाम्रो बारेमा"), href: "/about" },

@@ -12,12 +12,14 @@ export default function AdminDashboard() {
     const cards = [
         { label: 'News items visible to you', count: data.news, href: '/admin/news' },
         { label: 'Media items', count: data.media, href: '/admin/media' },
+        { label: 'Articles awaiting review', count: data.articles, href: '/admin/reviews' },
         { label: 'Membership applications', count: data.members, href: '/admin/registrations' },
     ].filter(c => c.count !== null);
     return <div className="max-w-5xl space-y-8">
         <div><h1 className="text-2xl font-bold">Dashboard</h1><p className="mt-2 text-slate-600">Live counts from the website database.</p></div>
         <div className="grid gap-4 md:grid-cols-3">{cards.map(c => <Link key={c.href} href={c.href} className="rounded-xl border bg-white p-6 hover:border-blue-400"><p className="text-3xl font-bold">{c.count}</p><p className="mt-2 text-slate-600">{c.label}</p></Link>)}</div>
         <section className="rounded-xl border bg-white p-6 space-y-4"><h2 className="text-lg font-semibold">Your workspace</h2><div className="flex flex-wrap gap-3">
+            {data.articles !== null && <Link className="rounded-lg bg-green-50 px-4 py-3 text-green-800" href="/admin/reviews">Article reviews</Link>}
             {data.news !== null && <Link className="rounded-lg bg-blue-50 px-4 py-3 text-blue-800" href="/admin/news">News & official posts</Link>}
             {data.media !== null && <Link className="rounded-lg bg-purple-50 px-4 py-3 text-purple-800" href="/admin/media">Photos & videos</Link>}
             <Link className="rounded-lg bg-slate-100 px-4 py-3" href="/messages">Messages</Link>

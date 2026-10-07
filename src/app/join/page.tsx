@@ -121,6 +121,7 @@ export default function JoinPage() {
                         {received && <p className="mt-2">बाँकी विवरण पछि यही पृष्ठमा फर्केर भर्न सक्नुहुन्छ। / Return to this page whenever you are ready to add details.</p>}
                         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                             <Link href="/commune" className="inline-flex min-h-12 items-center justify-center rounded-lg bg-brand-blue px-5 py-3 text-center font-semibold text-white transition-colors hover:bg-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2">समुदायमा जानुहोस् / Visit the community</Link>
+                            <Link href="/blogs/write" className="inline-flex min-h-12 items-center justify-center rounded-lg bg-white border-2 border-brand-blue px-5 py-3 text-brand-blue font-semibold">लेख पठाउनुहोस् / Submit an article</Link>
                             <Link href="/members" className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-brand-blue bg-white px-5 py-3 text-center font-semibold text-brand-blue transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2">अन्य सदस्यहरू हेर्नुहोस् / See other members</Link>
                         </div>
                     </section>}

@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
 
         // CMS restricted to yantrik, admin_party, admin only
         const permissions: PartyPermission[] = [];
-        for (const key of ['news.publish', 'media.publish'] as PartyPermission[]) {
+        for (const key of ['news.publish', 'media.publish', 'articles.review'] as PartyPermission[]) {
             const { data: allowed } = await supabase.rpc('has_party_permission', { permission_key: key });
             if (allowed) permissions.push(key);
         }

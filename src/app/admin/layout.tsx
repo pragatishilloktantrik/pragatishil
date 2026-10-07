@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 .single();
 
             const granted: PartyPermission[] = [];
-            for (const key of ['news.publish', 'media.publish'] as PartyPermission[]) {
+            for (const key of ['news.publish', 'media.publish', 'articles.review'] as PartyPermission[]) {
                 const { data } = await supabase.rpc('has_party_permission', { permission_key: key });
                 if (data) granted.push(key);
             }
@@ -82,6 +82,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: "AI Prompts", href: "/admin/ai-prompts", icon: Bot, restricted: true, allowIf: canViewAIPrompts },
         { name: "Graveyard", href: "/admin/graveyard", icon: Skull },
         { name: "Site Configuration", href: "/admin/pages", icon: FileText },
+        { name: "Article reviews", href: "/admin/reviews", icon: FileText },
         { name: "News Room", href: "/admin/news", icon: Newspaper },
         { name: "Media Gallery", href: "/admin/media", icon: Image },
     ];

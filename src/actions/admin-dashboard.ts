@@ -9,7 +9,7 @@ export async function getAdminDashboard() {
     if (!user) throw new Error('Please sign in');
     const { data: profile } = await supabase.from('profiles').select('role,is_banned').eq('id', user.id).single();
     const permissions: PartyPermission[] = [];
-    for (const key of ['news.publish', 'media.publish'] as PartyPermission[]) {
+    for (const key of ['news.publish', 'media.publish', 'articles.review'] as PartyPermission[]) {
         const { data } = await supabase.rpc('has_party_permission', { permission_key: key });
         if (data) permissions.push(key);
     }
@@ -18,8 +18,9 @@ export async function getAdminDashboard() {
     const results = await Promise.all([
         canAccessAdminPath('/admin/news', role, permissions) ? supabase.from('news_items').select('id', { count: 'exact', head: true }) : Promise.resolve(null),
         canAccessAdminPath('/admin/media', role, permissions) ? supabase.from('media_gallery').select('id', { count: 'exact', head: true }) : Promise.resolve(null),
+        canAccessAdminPath('/admin/reviews', role, permissions) ? supabase.from('news_items').select('id', { count: 'exact', head: true }).eq('content_type', 'article').eq('status', 'submitted') : Promise.resolve(null),
         role === 'admin' ? supabaseAdmin.from('members').select('id', { count: 'exact', head: true }) : Promise.resolve(null),
     ]);
     for (const r of results) if (r?.error) throw new Error(r.error.message);
-    return { owner: role === 'admin', news: results[0]?.count ?? null, media: results[1]?.count ?? null, members: results[2]?.count ?? null };
+    return { owner: role === 'admin', news: results[0]?.count ?? null, media: results[1]?.count ?? null, articles: results[2]?.count ?? null, members: results[3]?.count ?? null };
 }

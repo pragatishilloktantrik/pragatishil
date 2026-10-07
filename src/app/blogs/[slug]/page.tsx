@@ -1,3 +1,4 @@
+import MemberArticle from "./MemberArticle";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { NewsItem } from "@/types";
@@ -30,7 +31,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         }
     }
 
-    if (!news) return { title: 'News Not Found' };
+    if (!news) return { title: 'Article not found' };
+    if (news.status !== 'published') return { title: 'Private article preview', robots: { index: false, follow: false } };
 
     return {
         title: `${news.title} | Pragatishil News`,
@@ -83,6 +85,13 @@ export default async function NewsArticlePage({ params }: { params: { slug: stri
         } else {
             error = slugError;
         }
+    }
+
+    if (news?.content_type === 'article') {
+        const { data: review } = user ? await supabase.rpc('can_review_articles') : { data: false };
+        const own = !!user && news.author_id === user.id;
+        if (news.status !== 'published' && !own && !review) notFound();
+        return <MemberArticle article={news} own={own} review={!!review} />;
     }
 
     // Check if not found or access denied
