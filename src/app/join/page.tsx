@@ -119,7 +119,10 @@ export default function JoinPage() {
                         <h2 className="font-bold">{received ? 'दर्ता प्राप्त भयो / Registration received' : 'तपाईंको आवेदन / Your application'}</h2>
                         <p className="mt-2">{status === 'approved' ? 'स्वीकृत / Approved. Saving changes will send your application for review again.' : status === 'rejected' ? 'पुनरावलोकन आवश्यक / Please contact the party or update your details for another review.' : 'समीक्षाको प्रतीक्षामा / Pending review. Registration is not yet approved membership.'}</p>
                         {received && <p className="mt-2">बाँकी विवरण पछि यही पृष्ठमा फर्केर भर्न सक्नुहुन्छ। / Return to this page whenever you are ready to add details.</p>}
-                        <Link href="/commune" className="mt-3 inline-block underline">समुदायमा जानुहोस् / Visit the community</Link>
+                        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                            <Link href="/commune" className="inline-flex min-h-12 items-center justify-center rounded-lg bg-brand-blue px-5 py-3 text-center font-semibold text-white transition-colors hover:bg-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2">समुदायमा जानुहोस् / Visit the community</Link>
+                            <Link href="/members" className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-brand-blue bg-white px-5 py-3 text-center font-semibold text-brand-blue transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2">अन्य सदस्यहरू हेर्नुहोस् / See other members</Link>
+                        </div>
                     </section>}
                     <form noValidate onSubmit={submit} className="space-y-6 rounded-xl border bg-white p-6 shadow-sm">
                         <p className="text-sm text-slate-600 break-words">Google: {user.email} · इमेल स्वतः सुरक्षित हुन्छ / Email is saved from your account.</p>
