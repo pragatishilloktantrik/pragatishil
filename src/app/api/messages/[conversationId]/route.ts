@@ -107,12 +107,13 @@ export async function POST(
     // Check role
     const { data: profile } = await supabase
         .from("profiles")
-        .select("role, full_name, handle")
+        .select("role, full_name, handle, is_banned")
         .eq("id", user.id)
         .single();
 
     // Check if user can reply to conversations using role hierarchy
-    const canMessage = canReplyToConversation(profile?.role || 'guest');
+    const { data: appointed } = await supabase.rpc('has_party_permission', { permission_key: 'chat.use' });
+    const canMessage = !profile?.is_banned && (!!appointed || canReplyToConversation(profile?.role || 'guest'));
     if (!profile?.role || !canMessage) {
         return NextResponse.json({ error: "Messaging requires ward_committee role or higher" }, { status: 403 });
     }

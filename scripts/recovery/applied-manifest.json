@@ -13,5 +13,20 @@
     "file": "supabase/migrations/20261007120002_lookup_and_membership_access.sql",
     "sha256": "29149908a008aaa1a44058cb29a7067917a874af48e689d6b71873e819884126",
     "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007130000_membership_photos.sql",
+    "sha256": "51dbf1caf099fec89a0c2b79c754262dfde81ef9f44425ccbf283d61de443543",
+    "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007140000_position_access.sql",
+    "sha256": "75fb9e898b30a705ad9f4ebdf44877c9ed1c76fb998850fac951e8f3e18d855d",
+    "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007140001_position_access_hardening.sql",
+    "sha256": "ca86b3d7835d3ae8762355590f47f85e942895c872ddbb9a9905113de5f303b7",
+    "applied_project": "ufwkblaqnutxqineduke"
   }
 ]

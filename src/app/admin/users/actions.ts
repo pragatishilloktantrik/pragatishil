@@ -5,7 +5,6 @@ import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/supabase/serverAdmin";
 import { UserRole, Profile } from "@/types";
 import { revalidatePath } from "next/cache";
-import { canManageUsers } from "@/lib/permissions";
 
 export async function getUsers(page = 1, search = "") {
     const supabase = await createClient();
@@ -21,7 +20,7 @@ export async function getUsers(page = 1, search = "") {
         .eq('id', user.id)
         .single();
 
-    if (!currentUserProfile || !canManageUsers(currentUserProfile.role)) {
+    if (!currentUserProfile || currentUserProfile.role !== 'admin') {
         throw new Error("Forbidden: Insufficient permissions");
     }
 
@@ -64,11 +63,16 @@ export async function updateUserRole(userId: string, newRole: string) {
         .single();
 
     // STRICT: Only admin and admin_party can change roles
-    const allowed = ['admin', 'admin_party'];
+    const allowed = ['admin'];
 
     if (!currentUserProfile || !allowed.includes(currentUserProfile.role)) {
         throw new Error("Forbidden: Only Political Admins and System Admins can change roles.");
     }
+
+    const assignableRoles = ['member','party_member','volunteer','team_member','central_committee','board','admin_party','yantrik'];
+    if (!assignableRoles.includes(newRole)) throw new Error('Invalid system role');
+    const { data: target } = await supabaseAdmin.from('profiles').select('role').eq('id', userId).single();
+    if (!target || target.role === 'admin') throw new Error('The owner account cannot be changed here');
 
     // Update Profile
     const { error: profileError } = await supabaseAdmin
@@ -94,7 +98,7 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason: s
         .eq('id', user.id)
         .single();
 
-    if (!canManageUsers(currentUserProfile?.role)) {
+    if (currentUserProfile?.role !== 'admin') {
         throw new Error("Forbidden: Insufficient permissions");
     }
 
@@ -149,7 +153,7 @@ export async function adminUpdateProfile(userId: string, updates: Partial<Profil
         .eq('id', user.id)
         .single();
 
-    if (!canManageUsers(currentUserProfile?.role)) {
+    if (currentUserProfile?.role !== 'admin') {
         throw new Error("Forbidden: Insufficient permissions");
     }
 
@@ -215,7 +219,7 @@ export async function deactivateUser(userId: string) {
         .eq('id', user.id)
         .single();
 
-    if (!['yantrik', 'admin_party', 'admin'].includes(currentUserProfile?.role as string)) {
+    if (currentUserProfile?.role !== 'admin') {
         throw new Error("Forbidden: Insufficient permissions to deactivate users");
     }
 

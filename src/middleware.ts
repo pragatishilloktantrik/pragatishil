@@ -1,3 +1,4 @@
+import { canAccessAdminPath, PartyPermission } from '@/lib/party-access'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -37,14 +38,18 @@ export async function middleware(request: NextRequest) {
         // Check ADMIN role
         const { data: profile } = await supabase
             .from('profiles')
-            .select('role')
+            .select('role,is_banned')
             .eq('id', verifiedUser.id)
             .single()
 
 
         // CMS restricted to yantrik, admin_party, admin only
-        const adminRoles = ['admin_party', 'yantrik', 'admin'];
-        if (!profile || !adminRoles.includes(profile.role)) {
+        const permissions: PartyPermission[] = [];
+        for (const key of ['news.publish', 'media.publish'] as PartyPermission[]) {
+            const { data: allowed } = await supabase.rpc('has_party_permission', { permission_key: key });
+            if (allowed) permissions.push(key);
+        }
+        if (!profile || profile.is_banned || !canAccessAdminPath(request.nextUrl.pathname, profile.role, permissions)) {
             return redirectWithSession('/')
         }
     }

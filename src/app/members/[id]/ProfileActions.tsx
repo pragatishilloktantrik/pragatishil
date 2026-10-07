@@ -29,6 +29,8 @@ export default function ProfileActions({
     const router = useRouter();
     const [viewerRole, setViewerRole] = useState<string | null>(null);
     const [viewerLoaded, setViewerLoaded] = useState(false);
+    const [appointedChat, setAppointedChat] = useState(false);
+    const [appointedCms, setAppointedCms] = useState(false);
     const [messaging, setMessaging] = useState(false);
 
     // Get viewer's role
@@ -45,6 +47,12 @@ export default function ProfileActions({
                     .eq("id", data.user.id)
                     .single();
                 setViewerRole(profile?.role || null);
+                const [{ data: chat }, { data: news }, { data: media }] = await Promise.all([
+                    supabase.rpc('has_party_permission', { permission_key: 'chat.use' }),
+                    supabase.rpc('has_party_permission', { permission_key: 'news.publish' }),
+                    supabase.rpc('has_party_permission', { permission_key: 'media.publish' }),
+                ]);
+                setAppointedChat(!!chat); setAppointedCms(!!news || !!media);
             }
             setViewerLoaded(true);
         });
@@ -52,7 +60,7 @@ export default function ProfileActions({
 
     // Check messaging eligibility - only sender needs party_member+ role
     // All members can RECEIVE messages, only party_member+ can SEND
-    const viewerCanMessage = viewerRole && MESSAGING_ROLES.includes(viewerRole);
+    const viewerCanMessage = appointedChat || (viewerRole && MESSAGING_ROLES.includes(viewerRole));
 
     const handleMessage = async () => {
         setMessaging(true);
@@ -102,7 +110,7 @@ export default function ProfileActions({
             )}
 
             {/* Admin Button */}
-            {(canManageUsers || canManageCms) && (
+            {(canManageUsers || canManageCms || appointedCms) && (
                 <Link
                     href="/admin"
                     className="px-4 py-2 bg-brand-navy text-white hover:bg-slate-800 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm"

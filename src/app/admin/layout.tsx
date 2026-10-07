@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { canAccessAdminPath, PartyPermission } from '@/lib/party-access';
 import { createClient } from "@/lib/supabase/client";
 import {
     LayoutDashboard,
@@ -26,6 +27,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const router = useRouter();
     const supabase = createClient();
 
+    const [permissions, setPermissions] = useState<PartyPermission[]>([]);
     const [userRole, setUserRole] = useState<string | null>(null);
 
     useEffect(() => {
@@ -43,6 +45,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 .eq("id", user.id)
                 .single();
 
+            const granted: PartyPermission[] = [];
+            for (const key of ['news.publish', 'media.publish'] as PartyPermission[]) {
+                const { data } = await supabase.rpc('has_party_permission', { permission_key: key });
+                if (data) granted.push(key);
+            }
+            setPermissions(granted);
             setUserRole(profile?.role || "guest");
             setLoading(false);
         };
@@ -50,11 +58,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }, [router, supabase]);
 
     // Define Role-Based Access - CMS restricted to yantrik, admin_party, admin only
-    const cmsAllowedRoles = ['admin', 'yantrik', 'admin_party'];
     const auditRoles = ['admin']; // STRICT ROOT ONLY
     const aiPromptRoles = ['admin', 'yantrik']; // AI prompt editing - admin_party excluded
 
-    const hasCmsAccess = userRole && cmsAllowedRoles.includes(userRole);
+    const hasCmsAccess = userRole && canAccessAdminPath(pathname, userRole, permissions);
     const canViewAudit = userRole && auditRoles.includes(userRole);
     const canViewAIPrompts = userRole && aiPromptRoles.includes(userRole);
 
@@ -67,6 +74,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const allNavItems = [
         { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
         { name: "User Management", href: "/admin/users", icon: UserCog },
+        { name: "Positions & Access", href: "/admin/positions", icon: Users },
+        { name: "Messages", href: "/messages", icon: Users },
         { name: "Council", href: "/admin/council", icon: Users },
         { name: "Audit Logs", href: "/admin/audit", icon: Shield, restricted: true, allowIf: canViewAudit },
         { name: "AI Prompts", href: "/admin/ai-prompts", icon: Bot, restricted: true, allowIf: canViewAIPrompts },
@@ -76,7 +85,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: "Media Gallery", href: "/admin/media", icon: Image },
     ];
 
-    const navItems = allNavItems.filter(item => !item.restricted || item.allowIf);
+    const navItems = allNavItems.filter(item => (item.href === '/messages' || canAccessAdminPath(item.href, userRole || 'guest', permissions)) && (!item.restricted || item.allowIf));
 
     const handleSignOut = async () => {
         await supabase.auth.signOut();

@@ -18,11 +18,13 @@ async function getActor(supabase: any) {
         .eq('id', user.id)
         .single();
 
-    if (!canManageCms(profile?.role)) {
+    const { data: newsPermission } = await supabase.rpc('has_party_permission', { permission_key: 'news.publish' });
+    const { data: mediaPermission } = await supabase.rpc('has_party_permission', { permission_key: 'media.publish' });
+    if (!canManageCms(profile?.role) && !newsPermission && !mediaPermission) {
         throw new Error("Forbidden: Insufficient permissions to manage CMS");
     }
 
-    return { ...user, role: profile?.role };
+    return { ...user, role: profile?.role, newsPermission: !!newsPermission, mediaPermission: !!mediaPermission };
 }
 
 // --- Site Settings ---
@@ -112,16 +114,17 @@ export async function upsertNewsItem(item: any) {
     const contentType = item.content_type || 'official';
     const isOfficial = contentType === 'official';
     const isArticle = contentType === 'article';
+    if (!isOfficial && !isArticle) throw new Error('Invalid content type');
 
     // Permission validation
     const officialRoles = ['admin', 'yantrik', 'admin_party'];
     const articleRoles = ['party_member', 'team_member', 'central_committee', 'board', 'admin_party', 'yantrik', 'admin'];
 
-    if (isOfficial && !officialRoles.includes(user.role)) {
+    if (isOfficial && !officialRoles.includes(user.role) && !user.newsPermission) {
         throw new Error("Forbidden: Only admin, yantrik, or admin_party can create official news.");
     }
 
-    if (isArticle && !articleRoles.includes(user.role)) {
+    if (isArticle && !articleRoles.includes(user.role) && !user.newsPermission) {
         throw new Error("Forbidden: You do not have permission to create articles.");
     }
 
@@ -157,7 +160,7 @@ export async function upsertNewsItem(item: any) {
     }
 
     // Publishing restrictions: Only certain roles can publish directly
-    const canPublish = ['admin', 'yantrik', 'admin_party', 'board'].includes(user.role);
+    const canPublish = user.newsPermission || ['admin', 'yantrik', 'admin_party', 'board'].includes(user.role);
     let finalStatus = item.status;
 
     if (item.status === 'published' && !canPublish) {
@@ -377,7 +380,7 @@ export async function upsertMediaItem(item: any) {
 
     const supabase = await createClient();
     const user = await getActor(supabase);
-    console.log("[CMS:upsertMediaItem] Actor/User ID:", user.id, "Role:", user.role);
+    if (!user.mediaPermission && !['admin','yantrik','admin_party','board','central_committee'].includes(user.role)) throw new Error('Media publishing access required');
 
     // Normalize Video URL using multi-platform parser
     if (item.media_type === 'video' || item.type === 'video') {

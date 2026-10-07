@@ -7,11 +7,12 @@ const MESSAGING_ROLES = ['party_member', 'team_member', 'central_committee', 'bo
 async function canUseMessaging(supabase: ReturnType<typeof createClient> extends Promise<infer T> ? T : never, userId: string): Promise<boolean> {
     const { data: profile } = await supabase
         .from("profiles")
-        .select("role")
+        .select("role,is_banned")
         .eq("id", userId)
         .single();
 
-    return profile?.role && MESSAGING_ROLES.includes(profile.role);
+    const { data: appointed } = await supabase.rpc('has_party_permission', { permission_key: 'chat.use' });
+    return !profile?.is_banned && (!!appointed || !!(profile?.role && MESSAGING_ROLES.includes(profile.role)));
 }
 
 /**
@@ -127,43 +128,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Valid userId required" }, { status: 400 });
     }
 
-    // Note: All members can RECEIVE messages, only sender needs party_member+ role
-    // No target role check needed
-
-    // Check if conversation already exists
-    const { data: existingConv } = await supabase.rpc('find_existing_conversation', {
-        user_a: user.id,
-        user_b: userId
-    });
-
-    if (existingConv && existingConv.length > 0) {
-        return NextResponse.json({ conversationId: existingConv[0].conversation_id, existing: true });
-    }
-
-    // Create new conversation
-    const { data: newConv, error: convError } = await supabase
-        .from("conversations")
-        .insert({})
-        .select("id")
-        .single();
-
-    if (convError || !newConv) {
-        console.error("Create conversation error:", convError);
-        return NextResponse.json({ error: convError?.message || "Failed to create" }, { status: 500 });
-    }
-
-    // Add both participants
-    const { error: partError } = await supabase
-        .from("conversation_participants")
-        .insert([
-            { conversation_id: newConv.id, user_id: user.id },
-            { conversation_id: newConv.id, user_id: userId }
-        ]);
-
-    if (partError) {
-        console.error("Add participants error:", partError);
-        return NextResponse.json({ error: partError.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ conversationId: newConv.id, existing: false });
+    const { data: conversationId, error } = await supabase.rpc('start_party_conversation', { p_recipient: userId });
+    if (error) return NextResponse.json({ error: error.message }, { status: error.code === '42501' ? 403 : 400 });
+    return NextResponse.json({ conversationId });
 }
