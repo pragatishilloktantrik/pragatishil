@@ -51,7 +51,7 @@ export default function KhullaMunchPage() {
                 }
 
                 // Find the Khulla Manch channel
-                const channelsRes = await fetch("/api/discussions/channels");
+                const channelsRes = await fetch("/api/discussions/channels?slug=khulla-manch");
                 if (!channelsRes.ok) throw new Error("Failed to fetch channels");
 
                 const channelsData = await channelsRes.json();

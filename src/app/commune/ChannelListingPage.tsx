@@ -19,11 +19,8 @@ export default function ChannelListingPage() {
     const [loadingMore, setLoadingMore] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [hasMore, setHasMore] = useState(true);
-    const [, setPage] = useState(0);
-    const CHANNELS_PER_PAGE = 5;
-
-    // Intersection Observer ref for infinite scroll
-    const observerTarget = React.useRef<HTMLDivElement>(null);
+    const [page, setPage] = useState(0);
+    const CHANNELS_PER_PAGE = 24;
 
     const fetchChannelsPage = async (pageNum: number) => {
         try {
@@ -31,36 +28,16 @@ export default function ChannelListingPage() {
             if (!isFirstPage) setLoadingMore(true);
 
             // Fetch channels with pagination
-            const channelsRes = await fetch(`/api/discussions/channels?limit=${CHANNELS_PER_PAGE}&offset=${pageNum * CHANNELS_PER_PAGE}`);
+            const channelsRes = await fetch(`/api/discussions/channels?root=true&limit=${CHANNELS_PER_PAGE}&offset=${pageNum * CHANNELS_PER_PAGE}`);
             if (!channelsRes.ok) throw new Error("Failed to fetch channels");
             const channelsData = await channelsRes.json();
             const channelsList: DiscussionChannel[] = channelsData.channels || [];
 
             // Check if we have more channels
-            if (channelsList.length < CHANNELS_PER_PAGE) {
-                setHasMore(false);
-            }
+            setHasMore(channelsData.hasMore ?? channelsList.length === CHANNELS_PER_PAGE);
 
-            // Fetch recent threads for each channel
-            const channelsWithThreads = await Promise.all(
-                channelsList.map(async (channel) => {
-                    try {
-                        const threadsRes = await fetch(
-                            `/api/discussions/threads?channel_id=${channel.id}&limit=3`
-                        );
-                        if (threadsRes.ok) {
-                            const threadsData = await threadsRes.json();
-                            return {
-                                ...channel,
-                                recentThreads: threadsData.threads || [],
-                            };
-                        }
-                    } catch (err) {
-                        console.error(`Failed to fetch threads for ${channel.name}:`, err);
-                    }
-                    return { ...channel, recentThreads: [] };
-                })
-            );
+            // Listing cards do not need one extra thread request per channel.
+            const channelsWithThreads = channelsList.map(channel => ({ ...channel, recentThreads: [] }));
 
             setChannels(prev => pageNum === 0 ? channelsWithThreads : [...prev, ...channelsWithThreads]);
         } catch (err) {
@@ -76,33 +53,6 @@ export default function ChannelListingPage() {
     useEffect(() => {
         fetchChannelsPage(0);
     }, []);
-
-    // Infinite scroll observer
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
-                    setPage(prev => {
-                        const nextPage = prev + 1;
-                        fetchChannelsPage(nextPage);
-                        return nextPage;
-                    });
-                }
-            },
-            { threshold: 0.1 }
-        );
-
-        const currentTarget = observerTarget.current;
-        if (currentTarget) {
-            observer.observe(currentTarget);
-        }
-
-        return () => {
-            if (currentTarget) {
-                observer.unobserve(currentTarget);
-            }
-        };
-    }, [hasMore, loadingMore, loading]);
 
     const getThumbnails = (threads: DiscussionThread[] = []) => {
         const thumbnails: string[] = [];
@@ -207,7 +157,8 @@ export default function ChannelListingPage() {
 
                 {/* Infinite Scroll Observer Target */}
                 {hasMore && (
-                    <div ref={observerTarget} className="py-8 flex justify-center">
+                    <div className="py-8 flex justify-center">
+                        {!loadingMore && <button className="rounded-lg bg-brand-blue px-5 py-3 font-semibold text-white" onClick={() => { const nextPage = page + 1; setPage(nextPage); fetchChannelsPage(nextPage); }}>Load more channels</button>}
                         {loadingMore && (
                             <div className="flex flex-col items-center gap-2">
                                 <Loader2 className="w-8 h-8 animate-spin text-brand-red" />
@@ -250,7 +201,7 @@ export default function ChannelListingPage() {
         return (
             <div
                 key={channel.id}
-                onClick={() => router.push(`/commune?channel=${channel.slug || channel.id}`)}
+                onClick={() => router.push(`/commune/${channel.slug || channel.id}`)}
                 className="group cursor-pointer"
             >
                 <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-brand-red dark:hover:border-brand-red">

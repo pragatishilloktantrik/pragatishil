@@ -27,6 +27,7 @@ export default function UserManagementPage() {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [loadError, setLoadError] = useState("");
 
     // Debounce search
     useEffect(() => {
@@ -38,12 +39,14 @@ export default function UserManagementPage() {
 
     const fetchData = async () => {
         setLoading(true);
+        setLoadError("");
         try {
             const { users, total } = await getUsers(page, search);
             setUsers(users || []);
             setTotal(total);
         } catch (err) {
             console.error(err);
+            setLoadError("Could not load members. Please retry.");
         } finally {
             setLoading(false);
         }
@@ -72,20 +75,7 @@ export default function UserManagementPage() {
         checkRole();
     }, []);
 
-    const isAuthorized = currentUserRole && ['admin', 'yantrik', 'admin_party', 'board'].includes(currentUserRole);
-
-    if (!loading && !isAuthorized) {
-        return (
-            <div className="flex flex-col items-center justify-center h-[50vh] text-center space-y-4">
-                <ShieldAlert size={64} className="text-red-500" />
-                <h2 className="text-2xl font-bold text-slate-800">Access Denied</h2>
-                <p className="text-slate-500 max-w-md">
-                    You do not have permission to manage users. This area is restricted to System Admins, Political Admins, and the Board.
-                </p>
-                <a href="/admin" className="text-brand-blue hover:underline font-bold">Return to Dashboard</a>
-            </div>
-        );
-    }
+    const isAuthorized = currentUserRole && ['admin'].includes(currentUserRole);
 
     const handleRoleChange = async (userId: string, newRole: string) => {
         if (!confirm(`Change role to ${newRole}?`)) return;
@@ -177,6 +167,21 @@ export default function UserManagementPage() {
         }
     };
 
+    if (loading || currentUserRole === null) return <p role="status">Loading members…</p>;
+
+    if (!isAuthorized) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[50vh] text-center space-y-4">
+                <ShieldAlert size={64} className="text-red-500" />
+                <h2 className="text-2xl font-bold text-slate-800">Access Denied</h2>
+                <p className="text-slate-500 max-w-md">
+                    You do not have permission to manage users. This area is restricted to the owner account.
+                </p>
+                <a href="/admin" className="text-brand-blue hover:underline font-bold">Return to Dashboard</a>
+            </div>
+        );
+    }
+
     return (
         <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex justify-between items-center">
@@ -196,6 +201,7 @@ export default function UserManagementPage() {
                 </div>
             </div>
 
+            {loadError && <div role="alert" className="rounded-lg bg-red-50 p-4 text-red-700">{loadError} <button className="underline" onClick={fetchData}>Retry</button></div>}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <table className="w-full text-left border-collapse">
                     <thead className="bg-slate-50 border-b border-slate-200">

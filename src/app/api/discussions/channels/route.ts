@@ -118,6 +118,10 @@ export async function GET(request: Request) {
 
         if (id) query = query.eq("id", id);
         if (slug) query = query.eq("slug", slug);
+        if (!id && !slug && searchParams.get('root') === 'true') query = query.is('parent_channel_id', null);
+        const limit = Math.min(100, Math.max(1, Number(searchParams.get('limit')) || 100));
+        const offset = Math.max(0, Math.floor(Number(searchParams.get('offset')) || 0));
+        if (!id && !slug && searchParams.has('limit')) query = query.range(offset, offset + limit - 1);
 
         const { data: allChannels, error } = await query.order("created_at", { ascending: true });
 
@@ -210,7 +214,7 @@ export async function GET(request: Request) {
             return userLevel >= ROLE_LEVELS['ward_committee'];
         });
 
-        return NextResponse.json({ channels: accessibleChannels as DiscussionChannel[] });
+        return NextResponse.json({ channels: accessibleChannels as DiscussionChannel[], hasMore: !id && !slug && searchParams.has('limit') && (allChannels || []).length === limit });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500 });

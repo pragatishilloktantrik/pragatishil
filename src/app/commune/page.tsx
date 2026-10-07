@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import EyeLoadingAnimation from "@/components/EyeLoadingAnimation";
 
 // Dynamically import ChannelListingPage
@@ -14,6 +15,13 @@ const ChannelListingPage = dynamic(() => import("./ChannelListingPage"), {
     ),
 });
 
+function LegacyChannelRedirect() {
+    const query = useSearchParams();
+    const router = useRouter();
+    const channel = query.get('channel');
+    useEffect(() => { if (channel) router.replace(`/commune/${encodeURIComponent(channel)}`); }, [channel, router]);
+    return null;
+}
 export default function CommunePage() {
     return (
         <Suspense
@@ -23,6 +31,7 @@ export default function CommunePage() {
                 </div>
             }
         >
+            <LegacyChannelRedirect />
             <ChannelListingPage />
         </Suspense>
     );
