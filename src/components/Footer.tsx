@@ -50,6 +50,8 @@ export default function Footer() {
                             <Link href="/media" className="text-blue-900 hover:text-brand-red transition-colors font-medium">{t(nav?.media?.en || "Media", nav?.media?.ne || "मिडिया")}</Link>
                             <Link href="/members" className="text-blue-900 hover:text-brand-red transition-colors font-medium">{t(nav?.members?.en || "Members", nav?.members?.ne || "सदस्यहरू")}</Link>
                             <Link href="/join" className="text-blue-900 hover:text-brand-red transition-colors font-medium">{t(nav?.join?.en || "Join Movement", nav?.join?.ne || "अभियानमा जोडिनुहोस्")}</Link>
+                            <Link href="/privacy" className="text-blue-900 hover:text-brand-red transition-colors font-medium">{t("Privacy Policy", "गोपनीयता नीति")}</Link>
+                            <Link href="/terms" className="text-blue-900 hover:text-brand-red transition-colors font-medium">{t("Website Terms", "वेबसाइट प्रयोगका सर्तहरू")}</Link>
                             <Link href="/tools/date-converter" className="text-blue-900 hover:text-brand-red transition-colors font-medium">{t(nav?.tools?.dateConverter?.en || "Date Converter", nav?.tools?.dateConverter?.ne || "मिति परिवर्तन")}</Link>
                         </div>
                     </div>

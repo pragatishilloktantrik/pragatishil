@@ -1052,6 +1052,9 @@ export default function JoinPage() {
                         )}
                     </section>
 
+                    <p className="text-sm leading-6 text-slate-700">
+                        विवरण पठाउनुअघि <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-800 underline">गोपनीयता नीति / Privacy Policy</a> र <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-blue-800 underline">वेबसाइट प्रयोगका सर्तहरू / Website Terms</a> पढ्नुहोस्। सदस्यता आवेदनले राजनीतिक दलसँगको तपाईंको सम्बन्ध जनाउँछ।
+                    </p>
                     {/* Submit */}
                     <div className="pt-6">
                         {submitError && <div className="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-200 font-medium">{submitError}</div>}

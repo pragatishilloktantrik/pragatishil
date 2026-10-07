@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/serverAdmin";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
     try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return NextResponse.json({ error: "Please sign in before uploading a photo." }, { status: 401 });
         const formData = await req.formData();
         const file = formData.get("image") as File;
 
-        if (!file) {
+        if (!(file instanceof File)) {
             return NextResponse.json({ error: "No image file provided" }, { status: 400 });
         }
 
@@ -15,11 +19,14 @@ export async function POST(req: NextRequest) {
         if (!validExtensions.includes(file.type)) {
             return NextResponse.json({ error: "Invalid file type. Only JPG, PNG, WEBP allowed." }, { status: 400 });
         }
+        if (file.size > 5 * 1024 * 1024) {
+            return NextResponse.json({ error: "Photo must be no larger than 5 MB." }, { status: 400 });
+        }
 
         const buffer = Buffer.from(await file.arrayBuffer());
 
         // Check for memberId in formData
-        const memberId = formData.get("memberId") as string;
+        const memberId = user.id;
 
         let filePath = "";
 
@@ -27,7 +34,7 @@ export async function POST(req: NextRequest) {
             // Deterministic path: members/<id>/profile.jpg
             // We can infer extension from mime type or just use standard .jpg or keep original extension
             const ext = file.type.split("/")[1] || "jpg";
-            filePath = `members/${memberId}/profile.${ext}`;
+            filePath = `members/${memberId}/${crypto.randomUUID()}.${ext}`;
         } else {
             // Fallback to old timestamp method if no memberId (backward compatibility)
             const timestamp = Date.now();
