@@ -3,7 +3,7 @@
 import { createBrowserClient } from "@supabase/ssr";
 import { useState } from "react";
 
-export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
+export default function LoginPage({ searchParams }: { searchParams: { error?: string; redirect?: string } }) {
     const [loading, setLoading] = useState(false);
 
     const handleGoogleLogin = async () => {
@@ -13,10 +13,12 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
             (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!
         );
 
+        const callback = new URL('/auth/callback', location.origin);
+        if (searchParams.redirect?.startsWith('/') && !searchParams.redirect.startsWith('//')) callback.searchParams.set('next', searchParams.redirect);
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${location.origin}/auth/callback`,
+                redirectTo: callback.toString(),
             },
         });
     };
