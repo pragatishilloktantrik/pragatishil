@@ -79,6 +79,6 @@ export async function GET(request: Request) {
         }
     }
 
-    // return the user to an error page with instructions
-    return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+    // Return to the login screen so a failed sign-in can be retried.
+    return NextResponse.redirect(`${origin}/auth/login?error=auth_callback`)
 }

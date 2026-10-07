@@ -3,7 +3,7 @@
 import { createBrowserClient } from "@supabase/ssr";
 import { useState } from "react";
 
-export default function LoginPage() {
+export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
     const [loading, setLoading] = useState(false);
 
     const handleGoogleLogin = async () => {
@@ -36,6 +36,11 @@ export default function LoginPage() {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-slate-200">
+                    {searchParams.error === 'auth_callback' && (
+                        <p role="alert" className="mb-4 text-sm text-red-700">
+                            Sign-in could not be completed. Please try again.
+                        </p>
+                    )}
                     <div>
                         <button
                             onClick={handleGoogleLogin}
