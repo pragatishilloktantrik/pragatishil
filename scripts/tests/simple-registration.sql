@@ -17,6 +17,10 @@ DO $$ BEGIN
  IF EXISTS(SELECT 1 FROM public.profiles WHERE id=auth.uid() AND is_public) THEN RAISE EXCEPTION 'Private default failed'; END IF;
  IF EXISTS(SELECT 1 FROM public.membership_drafts WHERE profile_id=auth.uid()) THEN RAISE EXCEPTION 'Submitted draft not cleared'; END IF;
  BEGIN
+  UPDATE public.profiles SET is_public=true WHERE id=auth.uid();
+  RAISE EXCEPTION 'Pending profile could be published via settings';
+ EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+ BEGIN
   INSERT INTO public.members(auth_user_id,capacity,full_name_ne,phone,email,dob_calendar,status) VALUES(auth.uid(),'party_member','Bad','9800000000','bad@example.invalid','unknown','approved');
   RAISE EXCEPTION 'Self-approved direct insert';
  EXCEPTION WHEN insufficient_privilege THEN NULL; END;

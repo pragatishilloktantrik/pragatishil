@@ -33,5 +33,10 @@
     "file": "supabase/migrations/20261007150000_simple_registration.sql",
     "sha256": "3d97da8521061a7ab0df40a4029988eefa468936b8ce47217ab77fe3e713cf20",
     "applied_project": "ufwkblaqnutxqineduke"
+  },
+  {
+    "file": "supabase/migrations/20261007150001_registration_visibility.sql",
+    "sha256": "aa18f89e893f22a6682b0c806a58f8fc0f8e8490937b6330b648a952445184e1",
+    "applied_project": "ufwkblaqnutxqineduke"
   }
 ]
