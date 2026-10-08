@@ -1,4 +1,5 @@
 "use client";
+import PartyFlag from "@/components/PartyFlag";
 
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
@@ -31,6 +32,7 @@ export default function Footer() {
 
                     {/* Column 1: Brand & Slogan */}
                     <div className="space-y-4">
+                        <PartyFlag className="h-20 w-20" />
                         <h3 className="text-2xl font-bold text-brand-red">
                             {t(nav?.brand?.firstEn || "Pragatishil", nav?.brand?.firstNe || "प्रगतिशील")} <span className="text-blue-900">{t(nav?.brand?.secondEn || "Loktantrik", nav?.brand?.secondNe || "लोकतान्त्रिक")}</span>
                         </h3>

@@ -1,4 +1,5 @@
 "use client";
+import PartyFlag from "@/components/PartyFlag";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -106,6 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     }`}
             >
                 <div className="flex items-center justify-between h-16 px-4 bg-slate-950">
+                    <PartyFlag className="h-9 w-9 shrink-0" />
                     <h1 className="text-xl font-bold bg-gradient-to-r from-brand-red to-brand-blue bg-clip-text text-transparent">
                         CMS Admin
                     </h1>

@@ -142,3 +142,9 @@ body {
     @apply min-h-[44px] px-6 py-3 bg-slate-100 text-slate-700 font-medium rounded-lg transition-all hover:bg-slate-200 focus:ring-2 focus:ring-slate-300/50;
   }
 }
+/* Sapling brand loader: respect reduced-motion preferences. */
+@keyframes sapling-sway { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes sapling-ring { to { transform: rotate(360deg); } }
+.sapling-loader-mark { transform-origin: 50% 88%; animation: sapling-sway 2.4s ease-in-out infinite; }
+.sapling-loader-ring { animation: sapling-ring 2s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .sapling-loader-mark, .sapling-loader-ring { animation: none; } }

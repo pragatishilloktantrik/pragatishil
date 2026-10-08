@@ -96,7 +96,7 @@ export default function ExploreGrid({ channelId, threads: initialThreads, onSele
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-red/20 to-brand-blue/20">
                                     <img
-                                        src="/favicon.png"
+                                        src="/brand/favicon-32.png"
                                         alt="Pragatishil"
                                         className="w-12 h-12 opacity-50"
                                     />

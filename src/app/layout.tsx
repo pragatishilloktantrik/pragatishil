@@ -15,10 +15,14 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://pragatishil.org"),
   title: "Pragatishil Loktantrik Party",
   description: "Official website of Pragatishil Loktantrik Party - Nepali Soil, Our Path.",
+  manifest: "/manifest.webmanifest",
+  openGraph: { title: "Pragatishil Loktantrik Party", description: "नेपाली माटो, हाम्रो बाटो", images: [{ url: "/brand/social-preview.png", width: 1200, height: 630 }] },
   icons: {
-    icon: "/favicon.png",
+    icon: [{ url: "/brand/favicon-32.png", sizes: "32x32", type: "image/png" }, { url: "/brand/favicon-16.png", sizes: "16x16", type: "image/png" }],
+    apple: [{ url: "/brand/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 

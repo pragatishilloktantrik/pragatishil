@@ -54,7 +54,7 @@ interface SearchUser {
     role: string;
 }
 
-const PLACEHOLDERS = ["/placeholders/eye-red.svg", "/placeholders/eye-blue.svg"];
+const PLACEHOLDERS = ["/brand/avatar-sapling-red.png", "/brand/avatar-sapling-blue.png"];
 
 // Video URL parsing helpers
 function getYouTubeId(url: string): string | null {

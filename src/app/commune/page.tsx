@@ -3,14 +3,14 @@
 import dynamic from "next/dynamic";
 import { Suspense, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import EyeLoadingAnimation from "@/components/EyeLoadingAnimation";
+import SaplingLoadingAnimation from "@/components/SaplingLoadingAnimation";
 
 // Dynamically import ChannelListingPage
 const ChannelListingPage = dynamic(() => import("./ChannelListingPage"), {
     ssr: false,
     loading: () => (
         <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-black flex flex-col items-center justify-center">
-            <EyeLoadingAnimation />
+            <SaplingLoadingAnimation />
         </div>
     ),
 });
@@ -27,7 +27,7 @@ export default function CommunePage() {
         <Suspense
             fallback={
                 <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-black flex flex-col items-center justify-center">
-                    <EyeLoadingAnimation />
+                    <SaplingLoadingAnimation />
                 </div>
             }
         >

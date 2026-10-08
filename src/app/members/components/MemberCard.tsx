@@ -14,8 +14,8 @@ import {
 } from "lucide-react";
 
 const PLACEHOLDERS = [
-    "/placeholders/eye-red.svg",
-    "/placeholders/eye-blue.svg",
+    "/brand/avatar-sapling-red.png",
+    "/brand/avatar-sapling-blue.png",
 ];
 
 interface MemberCardProps {

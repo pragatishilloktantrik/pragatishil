@@ -10,8 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 const PLACEHOLDERS = [
-    "/placeholders/eye-red.svg",
-    "/placeholders/eye-blue.svg",
+    "/brand/avatar-sapling-red.png",
+    "/brand/avatar-sapling-blue.png",
 ];
 
 // Helper to get role badge variant/icon (with disguising for admin/board)

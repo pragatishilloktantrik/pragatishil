@@ -22,10 +22,12 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         brand: {
-          red: "#D32F2F",     // Deep/Professional Red (Standardized)
-          blue: "#1565C0",    // Trust/Corporate Blue
+          red: "#D32F2F",     // Accessible text/button shade of flag red
+          blue: "#0738BA",    // Updated flag blue
           navy: "#0F172A",    // Slate 900 - Text/Strong BG
           white: "#FFFFFF",
+          green: "#169A29",
+          soil: "#8B3D13",
           bg: "#F8FAFC",      // Slate 50 - Page Background
           muted: "#64748b",   // Slate 500 - Muted text
         },

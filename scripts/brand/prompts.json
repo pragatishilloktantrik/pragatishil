@@ -1,0 +1,5 @@
+{
+  "mode": "built-in image_gen",
+  "reference": "WhatsApp Image 2026-10-08 at 11.32.13 AM.jpeg",
+  "final_prompt": "Precise-object-edit: Remove ALL glow, haze and soft shadow from this sapling logo. Preserve the same three leaves, dark veins, stem and low brown soil mound and their geometry. Produce a clean flat opaque green-and-brown emblem with crisp vector-like boundaries. Every pixel outside the emblem must be fully transparent alpha zero, with only normal 1-pixel antialiasing at boundaries. Interiors must be fully opaque, not translucent. No black background, no glow, no gradients outside the shapes, no text. Crop canvas tightly around the emblem with a small transparent margin. This is a favicon/official flag emblem, so it must look like the flat reference symbol."
+}

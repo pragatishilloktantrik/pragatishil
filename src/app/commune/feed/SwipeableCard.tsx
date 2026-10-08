@@ -97,7 +97,7 @@ export default function SwipeableCard({
                 </div>
             ) : (
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-800 to-slate-900 flex items-center justify-center">
-                    <img src="/favicon.png" alt="Logo" className="w-24 h-24 opacity-30" />
+                    <img src="/brand/favicon-32.png" alt="Logo" className="w-24 h-24 opacity-30" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/40" />
                 </div>
             )}

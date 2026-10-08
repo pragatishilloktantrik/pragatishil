@@ -370,7 +370,7 @@ export default function ChannelPage() {
                             <div className="flex items-center justify-center h-full bg-gradient-to-br from-brand-red/5 via-slate-50 to-brand-blue/5">
                                 <div className="text-center p-6">
                                     <img
-                                        src="/favicon.png"
+                                        src="/brand/favicon-32.png"
                                         alt="Pragatishil Loktantrik Party"
                                         className="w-24 h-24 md:w-32 md:h-32 mx-auto object-contain opacity-80"
                                     />

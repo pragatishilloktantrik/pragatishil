@@ -1,4 +1,5 @@
 "use client";
+import PartyFlag from "@/components/PartyFlag";
 import { getNewsLink } from "@/lib/news-links";
 
 import Link from "next/link";
@@ -71,6 +72,7 @@ export default function HomeClient({ content, news, videos, documents = [] }: Ho
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-white/40 blur-[120px] rounded-full -z-10"></div>
 
                 <div className="relative z-10 container mx-auto px-4 flex flex-col items-center max-w-5xl">
+                    <PartyFlag className="mb-6 h-32 w-32 md:h-40 md:w-40" priority />
                     {/* Slogan Pill */}
                     <div className="inline-flex items-center justify-center px-6 py-2 mb-8 border border-brand-navy/10 bg-white/60 backdrop-blur-md rounded-full text-brand-navy text-sm md:text-base font-bold tracking-wide shadow-sm animate-fade-in-up">
                         {t(c.nav.brand.firstEn + " " + c.nav.brand.secondEn, c.hero.pillNe)}

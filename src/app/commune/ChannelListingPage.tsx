@@ -5,7 +5,7 @@ import { DiscussionChannel, DiscussionThread } from "@/types";
 import { useRouter } from "next/navigation";
 import { Loader2, MessageSquare, Users, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
-import EyeLoadingAnimation from "@/components/EyeLoadingAnimation";
+import SaplingLoadingAnimation from "@/components/SaplingLoadingAnimation";
 import Image from "next/image";
 
 interface ChannelWithThreads extends DiscussionChannel {
@@ -72,7 +72,7 @@ export default function ChannelListingPage() {
     if (loading) {
         return (
             <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-black flex flex-col items-center justify-center">
-                <EyeLoadingAnimation />
+                <SaplingLoadingAnimation />
             </div>
         );
     }
@@ -233,7 +233,7 @@ export default function ChannelListingPage() {
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center p-8">
                                 <Image
-                                    src="/favicon.png"
+                                    src="/brand/favicon-32.png"
                                     alt={channel.name}
                                     width={120}
                                     height={120}

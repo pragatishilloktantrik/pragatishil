@@ -1,4 +1,5 @@
 "use client";
+import PartyFlag from "@/components/PartyFlag";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -46,9 +47,9 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center gap-4">
-                        <Link href="/" className="flex-shrink-0">
-                            {/* Just text logo for now to match prompt "Party logo and name" */}
-                            <span className="font-bold text-xl tracking-tight text-brand-red">
+                        <Link href="/" className="flex min-w-0 items-center gap-2">
+                            <PartyFlag className="h-9 w-9 shrink-0" priority />
+                            <span className="font-bold text-base lg:text-xl tracking-tight text-brand-red">
                                 {t(nav?.brand?.firstEn || "Pragatishil", nav?.brand?.firstNe || "प्रगतिशील")} <span className="text-brand-blue">{t(nav?.brand?.secondEn || "Loktantrik", nav?.brand?.secondNe || "लोकतान्त्रिक")}</span>
                             </span>
                         </Link>
