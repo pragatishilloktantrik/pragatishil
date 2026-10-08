@@ -1,4 +1,5 @@
 "use client";
+import { getNewsLink } from "@/lib/news-links";
 
 import Link from "next/link";
 import { siteContent as fallbackContent } from "@/config/siteContent";
@@ -30,11 +31,11 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
             {/* Header */}
             <div className="text-center mb-16">
                 <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">
-                    Progressive Blogs
-                    <span className="block text-2xl font-bold text-brand-blue mt-2">प्रगतिशील विचार</span>
+                    Media & Press
+                    <span className="block text-2xl font-bold text-brand-blue mt-2">मिडिया र समाचार</span>
                 </h1>
                 <p className="text-slate-600 max-w-2xl mx-auto font-medium">
-                    Progressive ideas, thought leadership, and insights from our members.
+                    Articles in other media, party updates, interviews, and photographs.
                 </p>
             </div>
 
@@ -44,7 +45,7 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-slate-200">
                         <div>
                             <h2 className="text-3xl font-black text-slate-800 border-l-8 border-brand-blue pl-4">Latest Articles</h2>
-                            <p className="text-slate-500 mt-2 pl-5 font-bold uppercase text-[10px] tracking-widest">Insights and ideas from our committee members.</p>
+                            <p className="text-slate-500 mt-2 pl-5 font-bold uppercase text-[10px] tracking-widest">Coverage and commentary from the original publishers.</p>
                         </div>
 
                         {/* Blog Link Button */}
@@ -53,20 +54,14 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
                                 href="/blogs"
                                 className="px-5 py-2 rounded-xl text-xs font-black transition-all border-2 bg-brand-blue text-white border-brand-blue hover:bg-brand-navy hover:border-brand-navy"
                             >
-                                VIEW ALL BLOGS →
+                                MEMBER ARTICLES →
                             </Link>
                         </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
                         {articles.map((item) => {
-                            // For fallback/external news, link to external source
-                            // For DB news (id > 10 typically indicates DB content), link to internal page
-                            const isDbItem = typeof item.id === 'number' && item.id > 10;
-                            const href = isDbItem
-                                ? `/news/${item.slug || item.id}`
-                                : (item.link || `/news/${item.slug || item.id}`);
-                            const isExternal = !isDbItem && item.link;
+                            const { href, external: isExternal } = getNewsLink(item);
 
                             return (
                                 <Link
@@ -81,6 +76,7 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
                                             <img
                                                 src={item.image_url || item.image}
                                                 alt={item.title}
+                                                loading="lazy"
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             />
                                         </div>

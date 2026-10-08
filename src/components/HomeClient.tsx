@@ -1,4 +1,5 @@
 "use client";
+import { getNewsLink } from "@/lib/news-links";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -171,13 +172,7 @@ export default function HomeClient({ content, news, videos, documents = [] }: Ho
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {n.slice(0, 3).map((item) => {
-                            // For fallback/external news (small IDs), link to external source
-                            // For DB news (id > 10), link to internal page
-                            const isDbItem = typeof item.id === 'number' && item.id > 10;
-                            const href = isDbItem
-                                ? `/news/${item.slug || item.id}`
-                                : (item.link || `/news/${item.slug || item.id}`);
-                            const isExternal = !isDbItem && item.link;
+                            const { href, external: isExternal } = getNewsLink(item);
 
                             return (
                                 <Link

@@ -2,8 +2,8 @@ import MediaContent from "./MediaContent";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
-    title: "Pragatishil Bichar | Progressive Blogs | प्रगतिशील विचार",
-    description: "Progressive ideas, thought leadership articles, and insights from Pragatishil Loktantrik Party members.",
+    title: "Media & Press | Pragatishil Loktantrik Party",
+    description: "Media coverage, articles, interviews and photographs.",
 };
 
 export const dynamic = 'force-dynamic';
@@ -16,6 +16,7 @@ export default async function MediaPage() {
         .from('news_items')
         .select('*')
         .eq('status', 'published')
+        .eq('content_type', 'official')
         .order('date', { ascending: false });
 
     // Fetch Gallery Items

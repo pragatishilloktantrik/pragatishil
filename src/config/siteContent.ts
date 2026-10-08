@@ -84,49 +84,15 @@ export const siteContent = {
             summary_en: "A critical analysis of the current ideological drought in Nepali politics and the search for a progressive alternative.",
             summary_ne: "नेपाली राजनीतिमा जारी वैचारिक खडेरीको विश्लेषण र वैकल्पिक मार्गको खोजी।",
             source: "OnlineKhabar",
-            date: "2024-08-25",
+            date: "२०८२ भदौ १",
             type: "Article",
             link: `https://www.onlinekhabar.com/2025/08/1743950/a-period-of-ideological-drought`,
-            image: "https://www.onlinekhabar.com/wp-content/uploads/2025/08/Baicharik-Khareri-1024x683.jpg",
+            image: "https://www.onlinekhabar.com/wp-content/uploads/2025/08/Baburam_Bhattarai_on_Ideological-crisis-1024x576.jpg",
             image_url: null,
             status: 'published',
-            author_name: "Political Analyst",
-            published_at: "2024-08-25T00:00:00Z"
+            author_name: "डा. बाबुराम भट्टराई"
         },
-        {
-            id: 2,
-            slug: "pragatishil-party-manifesto-launch",
-            title: "Pragatishil Party Manifesto Launch",
-            title_ne: "प्रगतिशील पार्टीको घोषणापत्र सार्वजनिक",
-            summary_en: "The party officially releases its comprehensive manifesto for social reform and economic justice.",
-            summary_ne: "पार्टीले सामाजिक सुधार र आर्थिक न्यायका लागि आफ्नो वृहत् घोषणापत्र सार्वजनिक गरेको छ।",
-            source: "Kantipur",
-            date: "2024-06-15",
-            type: "Article",
-            link: `https://ekantipur.com`,
-            image: "https://picsum.photos/800/600?random=10",
-            image_url: null,
-            status: 'published',
-            author_name: "Central Committee",
-            published_at: "2024-06-15T00:00:00Z"
-        },
-        {
-            id: 3,
-            slug: "chairman-interview-the-way-forward",
-            title: "Chairman Interview: The Way Forward",
-            title_ne: "अध्यक्षसँगको अन्तर्वार्ता: आगामी बाटो",
-            summary_en: "Chairman discusses our strategy for local empowerment and national development.",
-            summary_ne: "अध्यक्षले स्थानीय सशक्तिकरण र राष्ट्रिय विकासका लागि हाम्रो रणनीतिबारे चर्चा गर्नुभएको छ।",
-            source: "The Kathmandu Post",
-            date: "2024-07-01",
-            type: "Interview",
-            link: `https://kathmandupost.com`,
-            image: "https://picsum.photos/800/600?random=11",
-            image_url: null,
-            status: 'published',
-            author_name: "Editor",
-            published_at: "2024-07-01T00:00:00Z"
-        }
+
     ],
     videos: [
         {
