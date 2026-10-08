@@ -9,6 +9,7 @@ import { Search, Plus, X, Video, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { siteContent } from "@/config/siteContent";
 import { parseVideoUrl } from "@/lib/videoEmbed";
 
 interface VideosClientProps {
@@ -61,7 +62,8 @@ export default function VideosClient({ videos: initialVideos }: VideosClientProp
     const canManage = canManageMedia(userRole);
     const canDelete = canDeleteContent(userRole);
 
-    const filteredVideos = videos.filter(v =>
+    const displayVideos = videos.length > 0 ? videos : siteContent.videos;
+    const filteredVideos = displayVideos.filter(v =>
         !search || v.title?.toLowerCase().includes(search.toLowerCase())
     );
 
@@ -133,7 +135,8 @@ export default function VideosClient({ videos: initialVideos }: VideosClientProp
                                     <iframe
                                         width="100%"
                                         height="100%"
-                                        src={video.embed_url || video.url}
+                                        src={video.embed_url || parseVideoUrl(video.url).embedUrl || video.url}
+                                        loading="lazy"
                                         title={video.title || "Video"}
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -142,7 +145,7 @@ export default function VideosClient({ videos: initialVideos }: VideosClientProp
                                     />
 
                                     {/* Edit/Delete buttons */}
-                                    {canManage && (
+                                    {canManage && "media_type" in video && (
                                         <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                             <button
                                                 onClick={() => setEditingVideo(video)}
@@ -166,7 +169,7 @@ export default function VideosClient({ videos: initialVideos }: VideosClientProp
                                 <h3 className="font-bold text-slate-800 group-hover:text-brand-blue transition-colors px-2 text-lg leading-snug">
                                     {video.title || t("शीर्षकविहीन", "Untitled")}
                                 </h3>
-                                {video.caption && (
+                                {"caption" in video && video.caption && (
                                     <p className="text-sm text-slate-500 mt-1 px-2 line-clamp-2">{video.caption}</p>
                                 )}
                             </div>
@@ -355,7 +358,8 @@ function VideoEditModal({ video, onClose, onSuccess }: { video: MediaItem; onClo
                         <iframe
                             width="100%"
                             height="100%"
-                            src={video.embed_url || video.url}
+                            src={video.embed_url || parseVideoUrl(video.url).embedUrl || video.url}
+                            loading="lazy"
                             title="Preview"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

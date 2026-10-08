@@ -1,4 +1,5 @@
 "use client";
+import { parseVideoUrl } from "@/lib/videoEmbed";
 import PartyFlag from "@/components/PartyFlag";
 import { getNewsLink } from "@/lib/news-links";
 
@@ -58,7 +59,7 @@ export default function HomeClient({ content, news, videos, documents = [] }: Ho
 
     // Use database items directly - no fallback placeholder content
     const n = news || [];
-    const v = videos || [];
+    const v = videos.length > 0 ? videos : fallbackContent.videos;
 
     return (
         <main className="flex flex-col min-h-screen">
@@ -303,7 +304,8 @@ export default function HomeClient({ content, news, videos, documents = [] }: Ho
                                     <iframe
                                         width="100%"
                                         height="100%"
-                                        src={video.embed_url || video.url}
+                                        src={video.embed_url || parseVideoUrl(video.url).embedUrl || video.url}
+                                        loading="lazy"
                                         title={video.title || "Video"}
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

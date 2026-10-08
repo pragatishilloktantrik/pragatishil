@@ -97,28 +97,22 @@ export const siteContent = {
     videos: [
         {
             id: "vid1",
-            title: "Pragatishil Party Video 1",
+            title: "सम्पत्ति र भ्रष्टाचारबारे संवाद | हिमालय टिभी",
             url: "https://www.youtube.com/watch?v=XusiP06Z_lg",
             embed_url: "https://www.youtube.com/embed/XusiP06Z_lg",
         },
         {
             id: "vid2",
-            title: "Pragatishil Party Video 2",
+            title: "ओजस्वी भट्टराईको राजनीतिक यात्रा | अनलाइनखबर",
             url: "https://www.youtube.com/watch?v=2-SkP3SIrKk",
             embed_url: "https://www.youtube.com/embed/2-SkP3SIrKk",
         },
         {
             id: "vid3",
-            title: "Pragatishil Party Video 3",
+            title: "जवाफदेहिता र राजनीतिक संस्कृतिबारे संवाद | हिमालय टिभी",
             url: "https://www.youtube.com/watch?v=TUMNWhBYfxs",
             embed_url: "https://www.youtube.com/embed/TUMNWhBYfxs",
         }
-    ],
-    galleryImages: [
-        { id: 1, url: "https://picsum.photos/800/600?random=1", caption: "Rally in Chitwan", caption_ne: "चितवनमा र्‍याली", alt_text: "Social movement rally" },
-        { id: 2, url: "https://picsum.photos/800/600?random=2", caption: "Youth Conference", caption_ne: "युवा सम्मेलन", alt_text: "Youth leaders gathering" },
-        { id: 3, url: "https://picsum.photos/800/600?random=3", caption: "Policy Workshop", caption_ne: "नीति कार्यशाला", alt_text: "Political policy discussion" },
-        { id: 4, url: "https://picsum.photos/800/600?random=4", caption: "Community Service", caption_ne: "सामुदायिक सेवा", alt_text: "Party members during service" },
     ],
     contact: {
         address: "Baneshwor, Kathmandu, Nepal",

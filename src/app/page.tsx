@@ -55,6 +55,7 @@ export default async function Home() {
     .from('media_gallery')
     .select('*')
     .eq('media_type', 'video')
+    .order('created_at', { ascending: false })
     .limit(3);
 
   // 4. Fetch Documents (Press Releases)

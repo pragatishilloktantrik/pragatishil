@@ -1,4 +1,5 @@
 "use client";
+import { parseVideoUrl } from "@/lib/videoEmbed";
 import { getNewsLink } from "@/lib/news-links";
 
 import Link from "next/link";
@@ -17,11 +18,9 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
 
     // Fallback logic
     const news = initialNews.length > 0 ? initialNews : (fallbackContent.news as unknown as NewsItem[]);
-    const media = initialMedia.length > 0 ? initialMedia : [];
-
-    // Gallery split
-    const galleryImages = media.length > 0 ? media.filter(m => m.media_type === 'image') : (fallbackContent.galleryImages as unknown as MediaItem[]);
-    const videos = media.length > 0 ? media.filter(m => m.media_type === 'video') : (fallbackContent.videos as unknown as MediaItem[]);
+    const galleryImages = initialMedia.filter(m => m.media_type === 'image');
+    const uploadedVideos = initialMedia.filter(m => m.media_type === 'video');
+    const videos = uploadedVideos.length > 0 ? uploadedVideos : fallbackContent.videos;
 
     // Show only articles (filter out videos since we have separate video section)
     const articles = news.filter(item => item.type === "Article" || item.type === "Interview");
@@ -132,7 +131,8 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
                                     <iframe
                                         width="100%"
                                         height="100%"
-                                        src={video.embed_url || video.url}
+                                        src={video.embed_url || parseVideoUrl(video.url).embedUrl || video.url}
+                                        loading="lazy"
                                         title={video.title || "Video"}
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -146,8 +146,8 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
                     </div>
                 </section>
 
-                {/* --- SECTION 3: PHOTO GALLERY --- */}
-                <section>
+                {/* Show the gallery only when real photographs have been uploaded. */}
+                {galleryImages.length > 0 && <section>
                     <div className="mb-10 pb-6 border-b border-slate-200">
                         <Link href="/gallery" className="hover:opacity-80 transition-opacity block">
                             <h2 className="text-3xl font-black text-slate-800 border-l-8 border-brand-red pl-4">Photo Gallery</h2>
@@ -172,7 +172,7 @@ export default function MediaContent({ initialNews, initialMedia }: MediaContent
                             </div>
                         ))}
                     </div>
-                </section>
+                </section>}
             </div>
         </div>
     );
